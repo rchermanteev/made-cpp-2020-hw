@@ -15,16 +15,52 @@ uint64_t convertToUint64 (double number) {
 }
 
 bool getBit (const uint64_t number, const uint8_t index) {
-    /// Your code here...
+    uint64_t mask = 1ull << index;
+    uint64_t temp = mask & number;
+    temp >>= index;
+    return temp;
 }
 
+bool checkSign (uint64_t number) {
+    return !getBit(number, 63);
+}
+
+bool checkExp (uint64_t number) {
+    // there is no zero in the exponent
+    for (uint64_t i = 1; i < 12; ++ i)
+        if (!getBit(number, 63 - i))
+            return 0;
+
+    return 1;
+}
+
+bool checkNormalized (uint64_t number) {
+    int count = 0;
+    for (uint64_t i = 1; i < 12; ++ i)
+        if (getBit(number, 63 - i))
+            count++;
+
+    if (count < 11 && count > 0)
+        return 1;
+
+    return 0;
+}
+
+bool checkFractoin (uint64_t number) {
+    // there is at least one unit in the fraction
+    for (uint64_t i = 12; i < 64; ++ i)
+        if (getBit(number, 63 - i))
+            return 1;
+
+    return 0;
+}
 
 /**
  * Checkers here:
  */
 
 bool checkForPlusZero (uint64_t number) {
-    /// Your code here.
+    return number == 0x0000000000000000;
 }
 
 bool checkForMinusZero (uint64_t number) {
@@ -32,35 +68,54 @@ bool checkForMinusZero (uint64_t number) {
 }
 
 bool checkForPlusInf (uint64_t number) {
-    /// Your code here.
+    return number == 0x7FF0000000000000;
 }
 
 bool checkForMinusInf (uint64_t number) {
-    /// Your code here.
+    return number == 0xFFF0000000000000;
 }
 
 bool checkForPlusNormal (uint64_t number) {
-    /// Your code here.
+    if (checkSign(number) && checkNormalized(number)) 
+        return 1;
+
+    return 0;
 }
 
 bool checkForMinusNormal (uint64_t number) {
-    /// Your code here.
+    if (!checkSign(number) && checkNormalized(number)) 
+        return 1;
+    
+    return 0;
 }
 
 bool checkForPlusDenormal (uint64_t number) {
-    /// Your code here.
+    if (checkSign(number) && !checkExp(number))
+        return checkFractoin(number);
+
+    return 0;
 }
 
 bool checkForMinusDenormal (uint64_t number) {
-    /// Your code here.
+    if (!checkSign(number) && !checkExp(number))
+        return checkFractoin(number);
+
+    return 0;
 }
 
 bool checkForSignalingNan (uint64_t number) {
-    /// Your code here.
+    if (checkExp(number))
+        if (!getBit(number, 51) && checkFractoin(number))
+            return 1;
+
+    return 0;
 }
 
 bool checkForQuietNan (uint64_t number) {
-    /// Your code here.
+    if (checkExp(number))
+        return getBit(number, 51);
+
+    return 0;
 }
 
 
@@ -109,3 +164,4 @@ void classify (double number) {
         printf("Error.\n");
     }
 }
+
