@@ -26,43 +26,43 @@ count_det:
 	mov r1, #1
 
 	mul r1, r5
-        mul r1, r9
-        mul r1, r10
+	mul r1, r9
+	mul r1, r10
 
-        add r0, r1
+	add r0, r1
 
-        mov r1, #1 
+	mov r1, #1 
+	
+	mul r1, r6
+	mul r1, r7
+	mul r1, r11
+
+	add r0, r1
+
+	mov r1, #1 
 
 	mul r1, r6
-        mul r1, r7
-        mul r1, r11
+	mul r1, r8
+	mul r1, r10
 
-        add r0, r1
+	sub r0, r1
 
-        mov r1, #1 
+	mov r1, #1
 
-        mul r1, r6
-        mul r1, r8
-        mul r1, r10
+	mul r1, r4
+	mul r1, r9
+	mul r1, r11
 
-        sub r0, r1
+	sub r0, r1
 
-        mov r1, #1
+	mov r1, #1 
 
-        mul r1, r4
-        mul r1, r9
-        mul r1, r11
+	mul r1, r5
+	mul r1, r7
+	mul r1, r12
 
-        sub r0, r1
-
-        mov r1, #1 
-
-        mul r1, r5
-        mul r1, r7
-        mul r1, r12
-
-        sub r0, r1
-
+	sub r0, r1
+	
 	pop {r4-r12}
 
 	bx lr
