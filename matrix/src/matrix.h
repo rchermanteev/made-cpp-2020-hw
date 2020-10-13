@@ -14,21 +14,52 @@ class SizeMismatchException : public std::exception {};
 
 
 class Matrix {
-
 public:
 
+    class Row;
+
+    size_t num_cols;
+    size_t num_rows;
+    Row* rows;
+
+    class Row {
+
+    public:
+        double* row;
+
+        Row () {};
+
+        Row(size_t size) {
+            row = new double[size];
+            for (size_t i = 0; i < size; ++i)
+                row[i] = 0;
+        }
+        
+        double& operator[](size_t col_num) {
+            return row[col_num];
+        }
+
+        double& operator[](size_t col_num) const {
+            return row[col_num];
+        }
+
+    };
+
+
+
     Matrix();
-    Matrix(size_t rows, size_t cols);
+    Matrix(size_t num_rows, size_t num_cols);
     Matrix(const Matrix& copy);
     Matrix& operator=(const Matrix& a);
 
     double& get(size_t row, size_t col);
     const double& get(size_t row, size_t col) const;
     void set(size_t row, size_t col, const double& value);
-    void resize(size_t new_rows, size_t new_cols);
+    void resize(size_t new_num_rows, size_t new_num_cols);
 
-    /* ??? */ operator[](size_t row);
-    /* ??? */ operator[](size_t row) const;
+    Row& operator[](size_t row_num);
+
+    Row& operator[](size_t row_num) const;
 
     Matrix& operator+=(const Matrix& a);
     Matrix& operator-=(const Matrix& a);
@@ -43,18 +74,16 @@ public:
     Matrix operator-() const;
     Matrix operator+() const;
 
-    double det() const;
+    double det() const; 
     void transpose();
     Matrix transposed() const;
     double trace() const;
 
     std::vector<double> getRow(size_t row);
-    std::vector<double> getColumn(size_t column);
+    std::vector<double> getColumn(size_t col);
 
     bool operator==(const Matrix& a) const;
     bool operator!=(const Matrix& a) const;
-
-    // Your code goes here...
 
 };
 
@@ -62,6 +91,7 @@ public:
 Matrix operator*(const double& a, const Matrix& b);
 
 std::ostream& operator<<(std::ostream& output, const Matrix& matrix);
+
 std::istream& operator>>(std::istream& input, Matrix& matrix);
 
 
