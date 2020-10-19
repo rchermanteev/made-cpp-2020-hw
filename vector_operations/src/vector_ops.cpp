@@ -6,8 +6,9 @@ vector<double> task::operator+(const vector<double> &a) { return a; }
 
 vector<double> task::operator-(const vector<double> &a) {
   vector<double> res_vec;
+  res_vec.resize(a.size());
   for (size_t i = 0; i < a.size(); ++i)
-    res_vec.push_back(a[i] * -1);
+    res_vec[i] = a[i] * -1;
 
   return res_vec;
 }
@@ -15,9 +16,9 @@ vector<double> task::operator-(const vector<double> &a) {
 vector<double> task::operator+(const vector<double> &a,
                                const vector<double> &b) {
   vector<double> res_vec;
-
+  res_vec.resize(a.size());
   for (size_t i = 0; i < a.size(); ++i)
-    res_vec.push_back(a[i] + b[i]);
+    res_vec[i] = a[i] + b[i];
 
   return res_vec;
 }
@@ -25,9 +26,10 @@ vector<double> task::operator+(const vector<double> &a,
 vector<double> task::operator-(const vector<double> &a,
                                const vector<double> &b) {
   vector<double> res_vec;
+  res_vec.resize(a.size());
 
   for (size_t i = 0; i < a.size(); ++i)
-    res_vec.push_back(a[i] - b[i]);
+    res_vec[i] = a[i] - b[i];
 
   return res_vec;
 }
@@ -73,23 +75,21 @@ bool task::operator||(const vector<double> &a, const vector<double> &b) {
 }
 
 bool sign(double x) {
-  if (x >= 0)
-    return true;
 
-  return false;
+  return (x >= 0) ? true: false;
 }
 
 bool task::operator&&(const vector<double> &a, const vector<double> &b) {
-  if ((a || b) && (sign(a[0]) == sign(b[0])))
+  if (a || b) {
+    for (size_t i = 0; i < a.size(); ++ i)
+      if (sign(a[i]) != sign(b[i]))
+        return false;
+
     return true;
-
+  }
+    
   return false;
-}
 
-void swap(void *a, void *b) {
-  void *buf = a;
-  a = b;
-  b = buf;
 }
 
 void task::reverse(std::vector<double> &a) {
@@ -100,16 +100,18 @@ void task::reverse(std::vector<double> &a) {
 
 vector<int> task::operator|(const vector<int> &a, const vector<int> &b) {
   vector<int> res_vec;
+  res_vec.resize(a.size());
   for (size_t i = 0; i < a.size(); ++i)
-    res_vec.push_back(a[i] | b[i]);
+    res_vec[i] = a[i] | b[i];
 
   return res_vec;
 }
 
 vector<int> task::operator&(const vector<int> &a, const vector<int> &b) {
   vector<int> res_vec;
+  res_vec.resize(a.size());
   for (size_t i = 0; i < a.size(); ++i)
-    res_vec.push_back(a[i] & b[i]);
+    res_vec[i] = a[i] & b[i];
 
   return res_vec;
 }
