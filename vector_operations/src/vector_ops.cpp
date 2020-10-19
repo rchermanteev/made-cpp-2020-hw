@@ -74,22 +74,18 @@ bool task::operator||(const vector<double> &a, const vector<double> &b) {
   return true;
 }
 
-bool sign(double x) {
-
-  return (x >= 0) ? true: false;
-}
+bool sign(double x) { return (x >= 0) ? true : false; }
 
 bool task::operator&&(const vector<double> &a, const vector<double> &b) {
   if (a || b) {
-    for (size_t i = 0; i < a.size(); ++ i)
+    for (size_t i = 0; i < a.size(); ++i)
       if (sign(a[i]) != sign(b[i]))
         return false;
 
     return true;
   }
-    
-  return false;
 
+  return false;
 }
 
 void task::reverse(std::vector<double> &a) {
