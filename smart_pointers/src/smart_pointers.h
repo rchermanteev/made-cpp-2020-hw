@@ -118,7 +118,7 @@ public:
 
   void reset() {
 
-    cb->ref_weak_cnt -= 1;
+    cb->ref_shared_cnt -= 1;
 
     ControlBlock<T> *temp_cb = new ControlBlock<T>;
     temp_cb->ptr = nullptr;
@@ -128,7 +128,7 @@ public:
   }
 
   template <class U> void reset(U *new_ptr) {
-    cb->ref_weak_cnt -= 1;
+    cb->ref_shared_cnt -= 1;
 
     ControlBlock<U> *temp_cb = new ControlBlock<U>;
     temp_cb->ptr = new_ptr;
